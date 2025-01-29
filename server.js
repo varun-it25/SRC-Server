@@ -147,22 +147,22 @@ app.get('/gallery', async (req, res) => {
 });
 
 app.get('/gallery/read_file/:id', async (req, res) => {
-  const {id} = req.params  
+  const {id} = req.params
   try {
-    const files = await Gallery.findOne({_id: id})
-    res.status(201).send(files)
+    const file = await Gallery.findOne({_id: id})
+    res.status(201).send(file)
   } catch (err) {
-    res.status(500).json({ message: 'Error upload media', error: err.message });
+    res.status(500).json({ message: 'Error upload file', error: err.message });
   }
 });
 
 app.delete('/gallery/delete_file/:id', async (req, res) => {
   const {id} = req.params
   try {
-    const files = await Gallery.findOneAndDelete({_id: id})
-    res.status(201).send(files)
+    await Gallery.findOneAndDelete({_id: id})
+    res.status(201).send(`File deleted.`)
   } catch (err) {
-    res.status(500).json({ message: 'Error upload media', error: err.message });
+    res.status(500).json({ message: 'Error delete file', error: err.message });
   }
 });
 
