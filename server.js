@@ -146,10 +146,20 @@ app.get('/gallery', async (req, res) => {
   }
 });
 
-app.get('/gallery/file/:id', async (req, res) => {
+app.get('/gallery/read_file/:id', async (req, res) => {
   const {id} = req.params  
   try {
     const files = await Gallery.findOne({_id: id})
+    res.status(201).send(files)
+  } catch (err) {
+    res.status(500).json({ message: 'Error upload media', error: err.message });
+  }
+});
+
+app.delete('/gallery/delete_file/:id', async (req, res) => {
+  const {id} = req.params
+  try {
+    const files = await Gallery.findOneAndDelete({_id: id})
     res.status(201).send(files)
   } catch (err) {
     res.status(500).json({ message: 'Error upload media', error: err.message });
