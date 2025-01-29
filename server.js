@@ -30,6 +30,12 @@ const eventSchema = new mongoose.Schema({
   guest_mobile_no: String,
 }, { versionKey: false });
 
+const galleySchema = new mongoose.Schema({
+  file_type: String,
+  file_name: String,
+  file_size: String,
+}, { versionKey: false });
+
 const memberSchema = new mongoose.Schema({
   member_image: String,
   member_name: String,
@@ -40,6 +46,7 @@ const memberSchema = new mongoose.Schema({
 
 const Event = mongoose.model('Event', eventSchema);
 const Member = mongoose.model('Member', memberSchema);
+const Gallery = mongoose.model('Gallery', galleySchema);
 
 const checkRequiredFields = (requiredFields, data) => {
   for (let field of requiredFields) {
@@ -65,14 +72,14 @@ app.post('/create-event', async (req, res) => {
   }
 });
 
-app.get('/events/:event_id', async (req, res) => {
+app.get('/event/:event_id', async (req, res) => {
   const { event_id } = req.params;
   if (!event_id) return res.status(400).json({ message: 'Event id is required.' });
 
   try {
     const eventData = await Event.findById(event_id);
     if (!eventData) return res.status(404).json({ message: 'Event not found.' });
-    res.status(200).json(eventData);
+    res.status(200).json({...eventData, status: eventData.event_date});
   } catch (err) {
     res.status(500).json({ message: 'Error retrieving event', error: err.message });
   }
@@ -97,9 +104,9 @@ app.delete('/event/delete/:id', async (req, res) => {
   }
 });
 
-app.delete('/event/delete/all', async (req, res) => {
+app.delete('/event/delete_all', async (req, res) => {
   try {
-    await Event.findAndDelete({});
+    await Event.deleteMany({});
     res.status(201).send('All Events Deleted.');
   } catch (err) {
     res.status(500).json({ message: 'Error Deleting all events', error: err.message });
@@ -116,6 +123,36 @@ app.get('/members/:member_id', async (req, res) => {
     res.status(200).json(memberData);
   } catch (err) {
     res.status(500).json({ message: 'Error retrieving member', error: err.message });
+  }
+});
+
+app.post('/gallery/upload', async (req, res) => {
+  const{ file_type, file_name, file_size, file_url } = req.body
+  try {
+    const file = new Gallery({file_type, file_name, file_size, file_url})
+    await file.save()
+    res.status(201).send(`File uploaded.`)
+  } catch (err) {
+    res.status(500).json({ message: 'Error upload media', error: err.message });
+  }
+});
+
+app.get('/gallery', async (req, res) => {
+  try {
+    const files = await Gallery.find({})
+    res.status(201).send(files)
+  } catch (err) {
+    res.status(500).json({ message: 'Error upload media', error: err.message });
+  }
+});
+
+app.get('/gallery/file/:id', async (req, res) => {
+  const {id} = req.params  
+  try {
+    const files = await Gallery.findOne({_id: id})
+    res.status(201).send(files)
+  } catch (err) {
+    res.status(500).json({ message: 'Error upload media', error: err.message });
   }
 });
 
