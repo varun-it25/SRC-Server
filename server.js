@@ -87,6 +87,25 @@ app.get('/events', async (req, res) => {
   }
 });
 
+app.delete('/event/delete/:id', async (req, res) => {
+  const {id} = req.params  
+  try {
+    await Event.findOneAndDelete({_id: id});
+    res.status(201).send('Event Deleted');
+  } catch (err) {
+    res.status(500).json({ message: 'Error Deleting event', error: err.message });
+  }
+});
+
+app.delete('/event/delete/all', async (req, res) => {
+  try {
+    await Event.findAndDelete({});
+    res.status(201).send('All Events Deleted.');
+  } catch (err) {
+    res.status(500).json({ message: 'Error Deleting all events', error: err.message });
+  }
+});
+
 app.get('/members/:member_id', async (req, res) => {
   const { member_id } = req.params;
   if (!member_id) return res.status(400).json({ message: 'Member id is required.' });
