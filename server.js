@@ -33,7 +33,8 @@ const eventSchema = new mongoose.Schema({
 const galleySchema = new mongoose.Schema({
   file_type: String,
   file_name: String,
-  file_size: String,
+  file_size: number,
+  file_url: number,
 }, { versionKey: false });
 
 const memberSchema = new mongoose.Schema({
