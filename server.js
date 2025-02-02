@@ -27,17 +27,7 @@ const eventSchema = new mongoose.Schema({
   guest_image: String,
   guest_name: String,
   guest_email: String,
-  guest_mobile_no: String,
-}, { versionKey: false });
-
-const participationSchema = new mongoose.Schema({
-  event_id: String,
-  name: String,
-  rtu_roll_no: String,
-  roll: String,
-  college_email: String,
-  personal_email: String,
-  mobile_no: String,
+  guest_mobile_no: String
 }, { versionKey: false });
 
 const regitrationSchema = new mongoose.Schema({
@@ -47,6 +37,14 @@ const regitrationSchema = new mongoose.Schema({
   college_email: String,
   personal_email: String,
   mobile_no: String,
+}, { versionKey: false });
+
+const feedbackSchema = new mongoose.Schema({
+  event_id: String,
+  name: String,
+  rtu_roll_no: String,
+  mobile_no: String,
+  rate: String,
 }, { versionKey: false });
 
 const galleySchema = new mongoose.Schema({
@@ -68,7 +66,7 @@ const Event = mongoose.model('Event', eventSchema);
 const Member = mongoose.model('Member', memberSchema);
 const Gallery = mongoose.model('Gallery', galleySchema);
 const Registration = mongoose.model('Regitration', regitrationSchema);
-const Participation = mongoose.model('Participation', participationSchema);
+const Feedback = mongoose.model('Feedback', feedbackSchema);
 
 const checkRequiredFields = (requiredFields, data) => {
   for (let field of requiredFields) {
@@ -203,6 +201,54 @@ app.get('/registration/:registration_id', async (req, res) => {
   } catch (err) {
     console.log({ err });
     res.status(500).json({ message: 'Error retrieving registration', error: err.message });
+  }
+});
+
+app.get('/feedbacks/all', async (req, res) => {
+  try {
+    const feedbackData = await Feedback.find({});
+    res.status(200).json(feedbackData);
+  } catch (err) {
+    res.status(500).json({ message: 'Error retrieving feedbacks', error: err.message });
+  }
+});
+
+app.post('/add-feedback', async (req, res) => {
+  const { event_id, name, rtu_roll_no, mobile_no, role } = req.body;
+
+  try {
+    const feedbackData = new Feedback({ event_id, name, rtu_roll_no, mobile_no, role });
+    await feedbackData.save();
+    res.status(200).send('Feedback added');
+  } catch (err) {
+    res.status(500).json({ message: 'Error adding feedback', error: err.message });
+  }
+});
+
+app.get('/feedbacks/event/:event_id', async (req, res) => {
+  const { event_id } = req.params;
+  if (!event_id) return res.status(400).json({ message: 'Event id is required.' });
+
+  try {
+    const feedbacksData = await Feedback.find({ event_id });
+    if (!feedbacksData.length) return res.status(404).json({ message: 'Feedbacks not found.' });
+    res.status(200).json(feedbacksData);
+  } catch (err) {
+    res.status(500).json({ message: 'Error retrieving feedbacks', error: err.message });
+  }
+});
+
+app.get('/feedback/:feedback_id', async (req, res) => {
+  const { feedback_id } = req.params;
+  if (!feedback_id) return res.status(400).json({ message: 'Feedback id is required.' });
+
+  try {
+    const feedbackData = await Feedback.findById({ _id: feedback_id });
+    if (!feedbackData) return res.status(404).json({ message: 'Feedback not found.' });
+    res.status(200).json(feedbackData);
+  } catch (err) {
+    console.log({ err });
+    res.status(500).json({ message: 'Error retrieving feedback', error: err.message });
   }
 });
 
