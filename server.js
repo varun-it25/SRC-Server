@@ -30,6 +30,25 @@ const eventSchema = new mongoose.Schema({
   guest_mobile_no: String,
 }, { versionKey: false });
 
+const participationSchema = new mongoose.Schema({
+  event_id: String,
+  name: String,
+  rtu_roll_no: String,
+  roll: String,
+  college_email: String,
+  personal_email: String,
+  mobile_no: String,
+}, { versionKey: false });
+
+const regitrationSchema = new mongoose.Schema({
+  event_id: String,
+  name: String,
+  rtu_roll_no: String,
+  college_email: String,
+  personal_email: String,
+  mobile_no: String,
+}, { versionKey: false });
+
 const galleySchema = new mongoose.Schema({
   file_type: String,
   file_name: String,
@@ -48,6 +67,8 @@ const memberSchema = new mongoose.Schema({
 const Event = mongoose.model('Event', eventSchema);
 const Member = mongoose.model('Member', memberSchema);
 const Gallery = mongoose.model('Gallery', galleySchema);
+const Registration = mongoose.model('Regitration', regitrationSchema);
+const Participation = mongoose.model('Participation', participationSchema);
 
 const checkRequiredFields = (requiredFields, data) => {
   for (let field of requiredFields) {
@@ -134,6 +155,54 @@ app.get('/members/:member_id', async (req, res) => {
     res.status(200).json(memberData);
   } catch (err) {
     res.status(500).json({ message: 'Error retrieving member', error: err.message });
+  }
+});
+
+app.get('/registrations/all', async (req, res) => {
+  try {
+    const registrationData = await Registration.find({});
+    res.status(200).json(registrationData);
+  } catch (err) {
+    res.status(500).json({ message: 'Error retrieving registrations', error: err.message });
+  }
+});
+
+app.post('/add-registration', async (req, res) => {
+  const { event_id, name, rtu_roll_no, college_email, personal_email, mobile_no } = req.body;
+
+  try {
+    const registrationData = new Registration({ event_id, name, rtu_roll_no, college_email, personal_email, mobile_no });
+    await registrationData.save();
+    res.status(200).send('Registration added');
+  } catch (err) {
+    res.status(500).json({ message: 'Error adding registration', error: err.message });
+  }
+});
+
+app.get('/registrations/event/:event_id', async (req, res) => {
+  const { event_id } = req.params;
+  if (!event_id) return res.status(400).json({ message: 'Event id is required.' });
+
+  try {
+    const registrationsData = await Registration.find({ event_id });
+    if (!registrationsData.length) return res.status(404).json({ message: 'Registrations not found.' });
+    res.status(200).json(registrationsData);
+  } catch (err) {
+    res.status(500).json({ message: 'Error retrieving registrations', error: err.message });
+  }
+});
+
+app.get('/registration/:registration_id', async (req, res) => {
+  const { registration_id } = req.params;
+  if (!registration_id) return res.status(400).json({ message: 'Registration id is required.' });
+
+  try {
+    const registrationData = await Registration.findById({ _id: registration_id });
+    if (!registrationData) return res.status(404).json({ message: 'Registration not found.' });
+    res.status(200).json(registrationData);
+  } catch (err) {
+    console.log({ err });
+    res.status(500).json({ message: 'Error retrieving registration', error: err.message });
   }
 });
 
