@@ -214,7 +214,7 @@ app.get('/feedbacks/all', async (req, res) => {
 });
 
 app.post('/add-feedback', async (req, res) => {
-  const { event_id, name, rtu_roll_no, mobile_no, role } = req.body;
+  const { event_id, name, rtu_roll_no, mobile_no, experience } = req.body;
 
   try {
     const feedbackData = new Feedback({ event_id, name, rtu_roll_no, mobile_no, experience });
