@@ -44,7 +44,7 @@ const feedbackSchema = new mongoose.Schema({
   name: String,
   rtu_roll_no: String,
   mobile_no: String,
-  rate: String,
+  experience: String,
 }, { versionKey: false });
 
 const galleySchema = new mongoose.Schema({
@@ -217,7 +217,7 @@ app.post('/add-feedback', async (req, res) => {
   const { event_id, name, rtu_roll_no, mobile_no, role } = req.body;
 
   try {
-    const feedbackData = new Feedback({ event_id, name, rtu_roll_no, mobile_no, role });
+    const feedbackData = new Feedback({ event_id, name, rtu_roll_no, mobile_no, experience });
     await feedbackData.save();
     res.status(200).send('Feedback added');
   } catch (err) {
