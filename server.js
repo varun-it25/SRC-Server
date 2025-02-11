@@ -1,13 +1,13 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
-import connectDB from './config/db.js';
+import connectDB from './src/config/db.js';
 
-import eventRoutes from './routes/event.routes.js';
-import registrationRoutes from './routes/registration.routes.js';
-import feedbackRoutes from './routes/feedback.routes.js';
-import galleryRoutes from './routes/gallery.routes.js';
-import memberRoutes from './routes/member.routes.js';
+import eventRoutes from './src/routes/event.routes.js';
+import registrationRoutes from './src/routes/registration.routes.js';
+import feedbackRoutes from './src/routes/feedback.routes.js';
+import galleryRoutes from './src/routes/gallery.routes.js';
+import memberRoutes from './src/routes/member.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
