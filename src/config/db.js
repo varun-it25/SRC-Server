@@ -1,7 +1,4 @@
-// config/db.js
 import mongoose from 'mongoose';
-
-// const MONGO_URL = process.env.MONGODB_URL 
 
 const connectDB = async () => {
   try {
