@@ -48,18 +48,14 @@ export const createEvent = async (req, res) => {
 
 export const getEventById = async (req, res) => {
   const { event_id } = req.params;
-  if (!event_id)
-    return res.status(400).json({ message: "Event id is required." });
+  if (!event_id) { return res.status(400).json({ message: "Event id is required." }); }
 
   try {
-<<<<<<< HEAD
     const eventData = await Event.deleteOne({_id: event_id});
     if (!eventData) return res.status(404).json({ message: 'Event not found.' });
-=======
     const eventData = await Event.findById(event_id);
     if (!eventData)
       return res.status(404).json({ message: "Event not found." });
->>>>>>> origin/avi
     res.status(200).json(eventData);
   } catch (err) {
     res
