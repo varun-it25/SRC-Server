@@ -1,11 +1,6 @@
 // routes/feedbackRoutes.js
 import express from 'express';
-import {
-  getAllFeedbacks,
-  addFeedback,
-  getFeedbacksByEvent,
-  getFeedbackById,
-} from '../controllers/feedback.controller.js';
+import { getAllFeedbacks, addFeedback, getFeedbacksByEvent, getFeedbackById } from '../controllers/feedback.controller.js';
 
 const router = express.Router();
 

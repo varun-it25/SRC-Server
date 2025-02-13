@@ -8,6 +8,8 @@ import registrationRoutes from './src/routes/registration.routes.js';
 import feedbackRoutes from './src/routes/feedback.routes.js';
 import galleryRoutes from './src/routes/gallery.routes.js';
 import memberRoutes from './src/routes/member.routes.js';
+import downloadExcel from './src/routes/downloadExcel.routes.js';
+import createExcel from './src/routes/createExcel.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,6 +24,8 @@ app.use(registrationRoutes);
 app.use(feedbackRoutes);
 app.use(galleryRoutes);
 app.use(memberRoutes);
+app.use(downloadExcel);
+app.use(createExcel);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found.' });
