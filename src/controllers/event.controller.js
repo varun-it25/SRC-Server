@@ -48,8 +48,7 @@ export const createEvent = async (req, res) => {
 
 export const getEventById = async (req, res) => {
   const { event_id } = req.params;
-  if (!event_id)
-    return res.status(400).json({ message: "Event id is required." });
+  if (!event_id) { return res.status(400).json({ message: "Event id is required." }); }
 
   try {
     const eventData = await Event.findById(event_id);

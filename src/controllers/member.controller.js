@@ -46,9 +46,9 @@ export const createMember = async (req, res) => {
 };
 
 export const deleteMember = async(req,res) => {
-  const {_id} = req.params;
+  const {member_id} = req.params;
   try{
-    await Member.findOne({_id: _id})
+    await Member.findOne({_id: member_id})
     res.status(201).json(
       {
       message: "Member Deleted Successfully"
