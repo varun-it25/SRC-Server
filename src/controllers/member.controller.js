@@ -44,3 +44,19 @@ export const createMember = async (req, res) => {
     res.status(500).json({ message: 'Error saving member data', error: err.message });
   }
 };
+
+export const deleteMember = async(req,res) => {
+  const {_id} = req.params;
+  try{
+    await Member.findOne({_id: _id})
+    res.status(201).json(
+      {
+      message: "Member Deleted Successfully"
+      }
+    )
+  }
+catch(err)
+{
+  res.status(500).json({ message: 'Error while deleting Member', error: err?.message });
+}
+}
