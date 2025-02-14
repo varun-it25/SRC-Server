@@ -28,7 +28,7 @@ export const getFeedbacksByEvent = async (req, res) => {
 
   try {
     const feedbacksData = await Feedback.find({ event_id });
-    if (!feedbacksData.length) return res.status(404).json({ message: 'Feedbacks not found.' });
+    if (!feedbacksData.length) return res.status(204).json({ message: 'Feedbacks not found.' });
     res.status(200).json(feedbacksData);
   } catch (err) {
     res.status(500).json({ message: 'Error retrieving feedbacks', error: err.message });
@@ -41,7 +41,7 @@ export const getFeedbackById = async (req, res) => {
 
   try {
     const feedbackData = await Feedback.findById(feedback_id);
-    if (!feedbackData) return res.status(404).json({ message: 'Feedback not found.' });
+    if (!feedbackData) return res.status(204).json({ message: 'Feedback not found.' });
     res.status(200).json(feedbackData);
   } catch (err) {
     console.error(err);
