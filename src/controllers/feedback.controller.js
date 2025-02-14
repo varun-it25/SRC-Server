@@ -1,5 +1,6 @@
 // controllers/feedbackController.js
 import {Feedback} from '../models/feedback.models.js';
+import { Event } from '../models/event.models.js';
 
 export const getAllFeedbacks = async (req, res) => {
   try {
@@ -48,3 +49,32 @@ export const getFeedbackById = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving feedback', error: err.message });
   }
 };
+
+export const getFeedbacksForMostRecentEvent = async (req, res) => {
+  try {
+  
+    const currentDate = new Date();
+    const mostRecentEvent = await Event.findOne({ event_date: { $lte: currentDate } })  
+      .sort({ event_date: 1 });  
+
+   
+    if (!mostRecentEvent) {
+      return res.status(404).json({ message: 'No past events found' });
+    }
+
+    
+    const feedbackData = await Feedback.find({ event_id: mostRecentEvent._id });
+
+ 
+    if (feedbackData.length === 0) {
+      return res.status(204).json({ message: 'No feedbacks found for this event' });
+    }
+
+   
+    res.status(200).json(feedbackData);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error retrieving feedbacks', error: err.message });
+  }
+};
+

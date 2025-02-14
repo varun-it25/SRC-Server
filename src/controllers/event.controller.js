@@ -73,19 +73,27 @@ export const getAllEvents = async (req, res) => {
   }
 };
 
-export const getUpcomingEvents = async (req, res) => {
+
+export const getMostRecentUpcomingEvent = async (req, res) => {
   try {
     const currentDate = new Date().toISOString().split("T")[0];
-    const upcomingEvents = await Event.find({
+    const mostRecentEvent = await Event.find({
       event_date: { $gte: currentDate },
-    });
-    res.status(200).json(upcomingEvents);
+    })
+      .sort({ event_date: 1 }) // Sort by event_date in ascending order to get the earliest upcoming events
+
+    if (!mostRecentEvent) {
+      return res.status(404).json({ message: "No upcoming events found" });
+    }
+
+    res.status(200).json(mostRecentEvent);
   } catch (err) {
     res
       .status(500)
-      .json({ message: "Error retrieving events", error: err.message });
+      .json({ message: "Error retrieving the most recent upcoming event", error: err.message });
   }
 };
+
 
 export const deleteEvent = async (req, res) => {
   const { id } = req.params;
