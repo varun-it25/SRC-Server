@@ -96,9 +96,9 @@ export const getMostRecentUpcomingEvent = async (req, res) => {
 
 
 export const deleteEvent = async (req, res) => {
-  const { id } = req.params;
+  const { event_id } = req.params;
   try {
-    await Event.findOneAndDelete({ _id: id });
+    await Event.findOneAndDelete({ _id: event_id });
     res.status(201).send("Event Deleted");
   } catch (err) {
     res
