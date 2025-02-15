@@ -35,7 +35,7 @@ export const getFileById = async (req, res) => {
 export const deleteFileById = async (req, res) => {
   const { id } = req.params;
   try {
-    await Gallery.findByIdAndDelete({ public_id: id });
+    await Gallery.findOneAndDelete({ public_id: id });
     res.status(200).send('File deleted.');
   } catch (err) {
     res.status(500).json({ message: 'Error deleting file', error: err.message });
