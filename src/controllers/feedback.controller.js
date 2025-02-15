@@ -42,7 +42,7 @@ export const getFeedbackById = async (req, res) => {
 
   try {
     const feedbackData = await Feedback.findById(feedback_id);
-    if (!feedbackData) return res.status(204).json({ message: 'Feedback not found.' });
+    if (!feedbackData) return res.status(204).json([]);
     res.status(200).json(feedbackData);
   } catch (err) {
     console.error(err);
@@ -59,7 +59,7 @@ export const getFeedbacksForMostRecentEvent = async (req, res) => {
 
    
     if (!mostRecentEvent) {
-      return res.status(404).json({ message: 'No past events found' });
+      return res.status(204).json([]);
     }
 
     
@@ -67,7 +67,7 @@ export const getFeedbacksForMostRecentEvent = async (req, res) => {
 
  
     if (feedbackData.length === 0) {
-      return res.status(204).json({ message: 'No feedbacks found for this event' });
+      return res.status(204).json([]);
     }
 
    
