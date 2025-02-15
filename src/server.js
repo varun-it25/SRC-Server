@@ -8,8 +8,8 @@ import registrationRoutes from './routes/registration.routes.js';
 import feedbackRoutes from './routes/feedback.routes.js';
 import galleryRoutes from './routes/gallery.routes.js';
 import memberRoutes from './routes/member.routes.js';
-import downloadExcel from './routes/downloadExcel.routes.js';
-import createExcel from './routes/createExcel.routes.js';
+import downloadExcel from './routes/download-excel.routes.js';
+import createExcel from './routes/create-excel.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;

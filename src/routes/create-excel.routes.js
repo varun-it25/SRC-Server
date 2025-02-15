@@ -1,6 +1,6 @@
 // routes/createExcel.js
 import express from 'express';
-import { createFeedbacksExcel, createRegistersExcel } from '../controllers/createExcel.controller.js';
+import { createFeedbacksExcel, createRegistersExcel } from '../controllers/excel.controller.js';
 
 const router = express.Router();
 
