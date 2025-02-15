@@ -1,12 +1,6 @@
 // routes/galleryRoutes.js
 import express from 'express';
-import {
-  uploadFile,
-  getAllFiles,
-  getFileById,
-  deleteFileById,
-  deleteAllFiles
-} from '../controllers/gallery.controller.js';
+import { uploadFile, getAllFiles, getFileById, deleteFileById, deleteAllFiles } from '../controllers/gallery.controller.js';
 
 const router = express.Router();
 

@@ -2,9 +2,9 @@
 import {Gallery} from '../models/gallery.models.js';
 
 export const uploadFile = async (req, res) => {
-  const { file_type, file_name, file_size, file_url } = req.body;
+  const { public_id, file_name, file_size, file_url } = req.body;
   try {
-    const file = new Gallery({ file_type, file_name, file_size, file_url });
+    const file = new Gallery({ public_id, file_name, file_size, file_url });
     await file.save();
     res.status(201).send('File uploaded.');
   } catch (err) {
