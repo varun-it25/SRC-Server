@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.post('/gallery/upload', uploadFile);
 router.get('/gallery', getAllFiles);
-router.get('/gallery/read_file/:id', getFileById);
-router.delete('/gallery/delete_file/:id', deleteFileById);
-router.delete('/gallery/delete_all_files', deleteAllFiles);
+router.get('/gallery/:id', getFileById);
+router.delete('/gallery/delete/:id', deleteFileById);
+router.delete('/gallery/delete/all', deleteAllFiles);
 
 export default router;
