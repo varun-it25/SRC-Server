@@ -1,11 +1,6 @@
 // routes/memberRoutes.js
 import express from "express";
-import {
-  getMemberById,
-  getAllMembers,
-  createMember,
-  deleteMember,
-} from "../controllers/member.controller.js";
+import { getMemberById, getAllMembers, createMember, deleteMember } from "../controllers/member.controller.js";
 
 const router = express.Router();
 

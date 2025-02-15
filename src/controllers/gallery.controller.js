@@ -16,6 +16,7 @@ export const updateUrl = async (req, res) => {
     const { id } = req.params;
     const { cloudinaryUrl } = req.body;
 
+
     if (!cloudinaryUrl) {
       return res.status(400).json({ error: 'cloudinaryUrl is required.' });
     }
