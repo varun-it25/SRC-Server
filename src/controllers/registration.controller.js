@@ -35,7 +35,7 @@ export const getRegistrationsByEvent = async (req, res) => {
 
   try {
     const registrationsData = await Registration.find({ event_id });
-    if (!registrationsData.length) return res.status(404).json({ message: 'Registrations not found.' });
+    if (!registrationsData.length) return res.status(204).json([]);
     res.status(200).json(registrationsData);
   } catch (err) {
     res.status(500).json({ message: 'Error retrieving registrations', error: err.message });
@@ -48,7 +48,7 @@ export const getRegistrationById = async (req, res) => {
 
   try {
     const registrationData = await Registration.findById(registration_id);
-    if (!registrationData) return res.status(404).json({ message: 'Registration not found.' });
+    if (!registrationData) return res.status(204).json([]);
     res.status(200).json(registrationData);
   } catch (err) {
     console.error(err);
