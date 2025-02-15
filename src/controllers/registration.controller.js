@@ -14,14 +14,7 @@ export const addRegistration = async (req, res) => {
   const { event_id, name, rtu_roll_no, college_email, personal_email, mobile_no } = req.body;
 
   try {
-    const registrationData = new Registration({
-      event_id, 
-      name, 
-      rtu_roll_no, 
-      college_email, 
-      personal_email, 
-      mobile_no
-    });
+    const registrationData = new Registration({ event_id, name, rtu_roll_no, college_email, personal_email, mobile_no });
     await registrationData.save();
     res.status(200).send('Registration added');
   } catch (err) {
@@ -35,7 +28,6 @@ export const getRegistrationsByEvent = async (req, res) => {
 
   try {
     const registrationsData = await Registration.find({ event_id });
-    if (!registrationsData.length) return res.status(204).json([]);
     res.status(200).json(registrationsData);
   } catch (err) {
     res.status(500).json({ message: 'Error retrieving registrations', error: err.message });
@@ -48,7 +40,6 @@ export const getRegistrationById = async (req, res) => {
 
   try {
     const registrationData = await Registration.findById(registration_id);
-    if (!registrationData) return res.status(204).json([]);
     res.status(200).json(registrationData);
   } catch (err) {
     console.error(err);

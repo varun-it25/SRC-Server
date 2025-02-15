@@ -29,7 +29,6 @@ export const getFeedbacksByEvent = async (req, res) => {
 
   try {
     const feedbacksData = await Feedback.find({ event_id });
-    if (!feedbacksData.length) return res.status(204).json({ message: 'Feedbacks not found.' });
     res.status(200).json(feedbacksData);
   } catch (err) {
     res.status(500).json({ message: 'Error retrieving feedbacks', error: err.message });
@@ -42,7 +41,6 @@ export const getFeedbackById = async (req, res) => {
 
   try {
     const feedbackData = await Feedback.findById(feedback_id);
-    if (!feedbackData) return res.status(204).json([]);
     res.status(200).json(feedbackData);
   } catch (err) {
     console.error(err);
@@ -51,25 +49,10 @@ export const getFeedbackById = async (req, res) => {
 };
 
 export const getFeedbacksForMostRecentEvent = async (req, res) => {
-  try {
-  
+  try {  
     const currentDate = new Date();
-    const mostRecentEvent = await Event.findOne({ event_date: { $lte: currentDate } })  
-      .sort({ event_date: 1 });  
-
-   
-    if (!mostRecentEvent) {
-      return res.status(204).json([]);
-    }
-
-    
+    const mostRecentEvent = await Event.findOne({ event_date: { $lte: currentDate } }).sort({ event_date: 1 });      
     const feedbackData = await Feedback.find({ event_id: mostRecentEvent._id });
-
- 
-    if (feedbackData.length === 0) {
-      return res.status(204).json([]);
-    }
-
    
     res.status(200).json(feedbackData);
   } catch (err) {
@@ -77,4 +60,3 @@ export const getFeedbacksForMostRecentEvent = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving feedbacks', error: err.message });
   }
 };
-
