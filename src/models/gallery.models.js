@@ -1,13 +1,18 @@
-import mongoose from "mongoose";
 
-const gallerySchema = new mongoose.Schema(
+import mongoose from 'mongoose';
+
+const { Schema, model } = mongoose;
+
+const gallerySchema = new Schema(
   {
-    file_name: String,
-    file_url: String,
-    file_size: Number,
-    public_id: String,
+    // The Cloudinary URL string
+    cloudinaryUrl: {
+      type: String,
+      required: true,
+    },
   },
-  { versionKey: false }
+  { timestamps: true }
 );
 
-export const Gallery = mongoose.model('Gallery', gallerySchema);
+
+export const Gallery = model('Gallery', gallerySchema);

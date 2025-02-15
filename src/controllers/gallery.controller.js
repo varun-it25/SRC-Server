@@ -1,52 +1,44 @@
-// controllers/galleryController.js
 import {Gallery} from '../models/gallery.models.js';
 
-export const uploadFile = async (req, res) => {
-  const { public_id, file_name, file_size, file_url } = req.body;
+
+
+export const getAllUrls = async (req, res) => {
   try {
-    const file = new Gallery({ public_id, file_name, file_size, file_url });
-    await file.save();
-    res.status(201).send('File uploaded.');
-  } catch (err) {
-    res.status(500).json({ message: 'Error uploading media', error: err.message });
+    const urls = await Gallery.find({}, '_id cloudinaryUrl');
+    res.status(200).json(urls);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const getAllFiles = async (req, res) => {
+export const updateUrl = async (req, res) => {
   try {
-    const files = await Gallery.find({});
-    res.status(200).json(files);
-  } catch (err) {
-    res.status(500).json({ message: 'Error retrieving files', error: err.message });
+    const { id } = req.params;
+    const { cloudinaryUrl } = req.body;
+
+
+    if (!cloudinaryUrl) {
+      return res.status(400).json({ error: 'cloudinaryUrl is required.' });
+    }
+
+    // Find the document by _id and update it
+    const updatedUrl = await Gallery.findByIdAndUpdate(
+      id,
+      { cloudinaryUrl },
+      { new: true } 
+    );
+
+    if (!updatedUrl) {
+      return res.status(404).json({ error: 'URL not found.' });
+    }
+
+    res.status(200).json({
+      _id: updatedUrl._id,
+      cloudinaryUrl: updatedUrl.cloudinaryUrl,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const getFileById = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const file = await Gallery.findById(id);
-    if (!file) return res.status(404).json({ message: 'File not found.' });
-    res.status(200).json(file);
-  } catch (err) {
-    res.status(500).json({ message: 'Error retrieving file', error: err.message });
-  }
-};
 
-export const deleteFileById = async (req, res) => {
-  const { id } = req.params;
-  try {
-    await Gallery.findOneAndDelete({ public_id: id });
-    res.status(200).send('File deleted.');
-  } catch (err) {
-    res.status(500).json({ message: 'Error deleting file', error: err.message });
-  }
-};
-
-export const deleteAllFiles = async (req, res) => {
-  try {
-    await Gallery.deleteMany({});
-    res.status(200).send('All files deleted.');
-  } catch (err) {
-    res.status(500).json({ message: 'Error deleting all files', error: err.message });
-  }
-};
