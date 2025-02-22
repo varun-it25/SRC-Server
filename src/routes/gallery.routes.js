@@ -1,5 +1,3 @@
-
-
 import express from 'express';
 import { getAllUrls, updateUrl } from '../controllers/gallery.controller.js';
 

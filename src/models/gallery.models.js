@@ -1,3 +1,4 @@
+
 import mongoose from 'mongoose';
 
 const { Schema, model } = mongoose;
@@ -12,5 +13,6 @@ const gallerySchema = new Schema(
   },
   { timestamps: true }
 );
+
 
 export const Gallery = model('Gallery', gallerySchema);
